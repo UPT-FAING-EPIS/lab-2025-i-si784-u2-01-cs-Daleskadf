@@ -1,0 +1,37 @@
+{
+  "docs/Math.Lib.Rooter.html": {
+    "href": "docs/Math.Lib.Rooter.html",
+    "title": "Class Rooter | Math.Lib",
+    "keywords": "Class Rooter Namespace Math.Lib Assembly Math.Lib.dll public class Rooter Inheritance object Rooter Inherited Members object.Equals(object) object.Equals(object, object) object.GetHashCode() object.GetType() object.MemberwiseClone() object.ReferenceEquals(object, object) object.ToString() Methods SquareRoot(double) public double SquareRoot(double input) Parameters input double Returns double"
+  },
+  "docs/Math.Lib.html": {
+    "href": "docs/Math.Lib.html",
+    "title": "Namespace Math.Lib | Math.Lib",
+    "keywords": "Namespace Math.Lib Classes Rooter"
+  },
+  "docs/Math.Tests.RooterTests.html": {
+    "href": "docs/Math.Tests.RooterTests.html",
+    "title": "Class RooterTests | Math.Lib",
+    "keywords": "Class RooterTests Namespace Math.Tests Assembly Math.Tests.dll [TestClass] public class RooterTests Inheritance object RooterTests Inherited Members object.Equals(object) object.Equals(object, object) object.GetHashCode() object.GetType() object.MemberwiseClone() object.ReferenceEquals(object, object) object.ToString() Methods BasicRooterTest() [TestMethod] public void BasicRooterTest() RooterTestNegativeInputWithMessage() [TestMethod] public void RooterTestNegativeInputWithMessage() RooterTestNegativeInputx() [TestMethod] public void RooterTestNegativeInputx() RooterValueRange() [TestMethod] public void RooterValueRange()"
+  },
+  "docs/Math.Tests.html": {
+    "href": "docs/Math.Tests.html",
+    "title": "Namespace Math.Tests | Math.Lib",
+    "keywords": "Namespace Math.Tests Classes RooterTests"
+  },
+  "docs/getting-started.html": {
+    "href": "docs/getting-started.html",
+    "title": "Getting Started | Math.Lib",
+    "keywords": "Getting Started"
+  },
+  "docs/introduction.html": {
+    "href": "docs/introduction.html",
+    "title": "Introduction | Math.Lib",
+    "keywords": "Introduction"
+  },
+  "index.html": {
+    "href": "index.html",
+    "title": "This is the HOMEPAGE. | Math.Lib",
+    "keywords": "This is the HOMEPAGE. Pruebas"
+  }
+}
