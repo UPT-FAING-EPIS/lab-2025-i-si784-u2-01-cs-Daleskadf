@@ -6,14 +6,6 @@ _layout: landing
 
 ## [Pruebas](Cobertura/index.html)
 
-## Clases
+## [Clase, Métodos y Atributos](docs/Math.Lib.Rooter.html)
 
-- [Rooter](api/Math.Lib.Rooter.html) - Clase que proporciona un método para calcular la raíz cuadrada.
-
-## Métodos
-
-- [SquareRoot](api/Math.Lib.Rooter.SquareRoot.md) - Método que calcula la raíz cuadrada de un número.
-
-## Atributos
-
-- **Input** - Parámetro del método `SquareRoot` que recibe el número para el cual se calcula la raíz cuadrada.
+## [Tests](docs/Math.Tests.RooterTests.html)
