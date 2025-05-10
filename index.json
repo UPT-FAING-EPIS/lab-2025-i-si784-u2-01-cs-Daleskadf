@@ -1,4 +1,9 @@
 {
+  "docs/Math.Lib.Class1.html": {
+    "href": "docs/Math.Lib.Class1.html",
+    "title": "Class Class1 | Math.Lib",
+    "summary": "Class Class1 Namespace Math.Lib Assembly Math.Lib.dll public class Class1 Inheritance object Class1 Inherited Members object.Equals(object) object.Equals(object, object) object.GetHashCode() object.GetType() object.MemberwiseClone() object.ReferenceEquals(object, object) object.ToString()"
+  },
   "docs/Math.Lib.Rooter.html": {
     "href": "docs/Math.Lib.Rooter.html",
     "title": "Class Rooter | Math.Lib",
@@ -7,17 +12,22 @@
   "docs/Math.Lib.html": {
     "href": "docs/Math.Lib.html",
     "title": "Namespace Math.Lib | Math.Lib",
-    "summary": "Namespace Math.Lib Classes Rooter"
+    "summary": "Namespace Math.Lib Classes Class1 Rooter"
   },
   "docs/Math.Tests.RooterTests.html": {
     "href": "docs/Math.Tests.RooterTests.html",
     "title": "Class RooterTests | Math.Lib",
     "summary": "Class RooterTests Namespace Math.Tests Assembly Math.Tests.dll [TestClass] public class RooterTests Inheritance object RooterTests Inherited Members object.Equals(object) object.Equals(object, object) object.GetHashCode() object.GetType() object.MemberwiseClone() object.ReferenceEquals(object, object) object.ToString() Methods BasicRooterTest() [TestMethod] public void BasicRooterTest() RooterTestNegativeInputWithMessage() [TestMethod] public void RooterTestNegativeInputWithMessage() RooterTestNegativeInputx() [TestMethod] public void RooterTestNegativeInputx() RooterValueRange() [TestMethod] public void RooterValueRange()"
   },
+  "docs/Math.Tests.UnitTest1.html": {
+    "href": "docs/Math.Tests.UnitTest1.html",
+    "title": "Class UnitTest1 | Math.Lib",
+    "summary": "Class UnitTest1 Namespace Math.Tests Assembly Math.Tests.dll [TestClass] public class UnitTest1 Inheritance object UnitTest1 Inherited Members object.Equals(object) object.Equals(object, object) object.GetHashCode() object.GetType() object.MemberwiseClone() object.ReferenceEquals(object, object) object.ToString() Methods TestMethod1() [TestMethod] public void TestMethod1()"
+  },
   "docs/Math.Tests.html": {
     "href": "docs/Math.Tests.html",
     "title": "Namespace Math.Tests | Math.Lib",
-    "summary": "Namespace Math.Tests Classes RooterTests"
+    "summary": "Namespace Math.Tests Classes RooterTests UnitTest1"
   },
   "docs/getting-started.html": {
     "href": "docs/getting-started.html",
