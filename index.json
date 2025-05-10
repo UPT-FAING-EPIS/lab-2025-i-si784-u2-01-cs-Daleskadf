@@ -32,6 +32,6 @@
   "index.html": {
     "href": "index.html",
     "title": "This is the HOMEPAGE. | Math.Lib",
-    "summary": "This is the HOMEPAGE. Pruebas Clases Rooter - Clase que proporciona un método para calcular la raíz cuadrada. Métodos SquareRoot - Método que calcula la raíz cuadrada de un número. Atributos Input - Parámetro del método SquareRoot que recibe el número para el cual se calcula la raíz cuadrada."
+    "summary": "This is the HOMEPAGE. Pruebas Clase, Métodos y Atributos Tests"
   }
 }
