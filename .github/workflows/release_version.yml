@@ -22,7 +22,7 @@ jobs:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
     - name: Run Unit Tests
-      run: dotnet test MyMath/Math.Tests/MyMath.Tests.csproj --logger trx
+      run: dotnet test MyMath/Math.Tests/Math.Tests.csproj --logger trx
 
     - name: Build project
       run: dotnet build MyMath/Math.Lib/Math.Lib.csproj -c Release
