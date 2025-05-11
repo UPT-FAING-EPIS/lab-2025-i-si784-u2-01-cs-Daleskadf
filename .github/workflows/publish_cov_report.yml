@@ -20,14 +20,14 @@ jobs:
 
       # Compilar el proyecto
       - name: Restore dependencies
-        run: dotnet restore ./MyMath.sln  # Especificamos la ruta correcta al archivo .sln
+        run: dotnet restore ./MyMath/MyMath.sln  # Especificamos la ruta correcta al archivo .sln
 
       - name: Build the project
-        run: dotnet build ./MyMath.sln --configuration Release  # Especificamos la ruta al archivo .sln
+        run: dotnet build ./MyMath/MyMath.sln --configuration Release  # Especificamos la ruta al archivo .sln
 
       # Ejecutar las pruebas y generar el reporte de cobertura
       - name: Run tests and collect code coverage
-        run: dotnet test ./MyMath.sln --configuration Release --collect:"XPlat Code Coverage"  # Especificamos la ruta al archivo .sln
+        run: dotnet test ./MyMath/MyMath.sln --configuration Release --collect:"XPlat Code Coverage"  # Especificamos la ruta al archivo .sln
 
       # Instalar la herramienta de generación de reportes
       - name: Install report generator
