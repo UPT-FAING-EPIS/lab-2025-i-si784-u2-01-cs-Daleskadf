@@ -57,7 +57,7 @@ jobs:
         echo "Tags available after fetch:"
         git tag -l
 
-    - name: Publish Release
+    - name: Publish Release nuget
       uses: ncipollo/release-action@v1
       with:
         tag: ${{ env.NAME }}
