@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # Puede ser 'windows-latest' si prefieres usar Windows
+    runs-on: ubuntu-latest  # Puedes usar 'windows-latest' si prefieres Windows
 
     steps:
       - name: Checkout code
@@ -16,18 +16,18 @@ jobs:
       - name: Set up .NET
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '6.x'  # Asegúrate de usar la versión correcta
+          dotnet-version: '6.x'  # Asegúrate de que esté usando la versión correcta de .NET
 
       # Compilar el proyecto
       - name: Restore dependencies
-        run: dotnet restore MyMath.sln  # Especifica el archivo de solución
+        run: dotnet restore ./MyMath.sln  # Especificamos la ruta correcta al archivo .sln
 
       - name: Build the project
-        run: dotnet build MyMath.sln --configuration Release  # Especifica el archivo de solución
+        run: dotnet build ./MyMath.sln --configuration Release  # Especificamos la ruta al archivo .sln
 
       # Ejecutar las pruebas y generar el reporte de cobertura
       - name: Run tests and collect code coverage
-        run: dotnet test MyMath.sln --configuration Release --collect:"XPlat Code Coverage"
+        run: dotnet test ./MyMath.sln --configuration Release --collect:"XPlat Code Coverage"  # Especificamos la ruta al archivo .sln
 
       # Instalar la herramienta de generación de reportes
       - name: Install report generator
