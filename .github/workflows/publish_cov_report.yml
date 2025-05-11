@@ -42,7 +42,7 @@ jobs:
       # Ejecutar la herramienta de reporte de cobertura
       - name: Generate coverage report
         run: |
-          dotnet tool run reportgenerator "-reports:./TestResults/*/coverage.cobertura.xml" "-targetdir:./coverage_report" -reporttypes:Html
+          ReportGenerator "-reports:./*/*/*/coverage.cobertura.xml" "-targetdir:Cobertura" -reporttypes:HTML
 
       # Publicar el reporte de cobertura en GitHub Pages
       - name: Publish coverage report to GitHub Pages
