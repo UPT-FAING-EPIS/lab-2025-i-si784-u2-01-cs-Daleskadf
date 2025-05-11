@@ -32,12 +32,12 @@ jobs:
       # Instalar la herramienta de generación de reportes
       - name: Install report generator
         run: |
-          dotnet tool install --global dotnet-reportgenerator-globaltool
+          dotnet tool install -g dotnet-reportgenerator-globaltool
 
       # Generar el reporte de cobertura
       - name: Generate coverage report
         run: |
-          reportgenerator "-reports:./TestResults/**/coverage.cobertura.xml" "-targetdir:./coverage_report" -reporttypes:Html
+          ReportGenerator "-reports:./*/*/*/coverage.cobertura.xml" "-targetdir:Cobertura" -reporttypes:HTML
 
       # Publicar el reporte de cobertura en GitHub Pages
       - name: Publish coverage report to GitHub Pages
