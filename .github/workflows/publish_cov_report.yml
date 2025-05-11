@@ -20,14 +20,14 @@ jobs:
 
       # Compilar el proyecto
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore MyMath.sln  # Especifica el archivo de solución
 
       - name: Build the project
-        run: dotnet build --configuration Release
+        run: dotnet build MyMath.sln --configuration Release  # Especifica el archivo de solución
 
       # Ejecutar las pruebas y generar el reporte de cobertura
       - name: Run tests and collect code coverage
-        run: dotnet test --configuration Release --collect:"XPlat Code Coverage"
+        run: dotnet test MyMath.sln --configuration Release --collect:"XPlat Code Coverage"
 
       # Instalar la herramienta de generación de reportes
       - name: Install report generator
