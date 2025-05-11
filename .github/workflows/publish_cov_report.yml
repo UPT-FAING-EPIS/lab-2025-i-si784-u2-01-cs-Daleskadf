@@ -39,10 +39,14 @@ jobs:
       - name: Change directory to MyMath
         run: cd MyMath
 
-      # Ejecutar la herramienta de reporte de cobertura
+      # Listar los archivos en TestResults para verificar la ubicación de coverage.cobertura.xml
+      - name: List files in TestResults directory
+        run: ls -R ./TestResults
+
+      # Generar el reporte de cobertura con un patrón de búsqueda más específico
       - name: Generate coverage report
         run: |
-          dotnet tool run reportgenerator "-reports:./*/*/*/coverage.cobertura.xml" "-targetdir:Cobertura" -reporttypes:HTML
+          dotnet tool run reportgenerator "-reports:./TestResults/*/coverage.cobertura.xml" "-targetdir:./coverage_report" -reporttypes:Html
 
       # Publicar el reporte de cobertura en GitHub Pages
       - name: Publish coverage report to GitHub Pages
