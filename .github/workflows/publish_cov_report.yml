@@ -34,7 +34,11 @@ jobs:
         run: |
           dotnet new tool-manifest # Crea un archivo de manifest de herramientas si no existe
           dotnet tool install dotnet-reportgenerator-globaltool
-          
+     
+      # Cambiar al directorio del proyecto para ejecutar la herramienta ReportGenerator
+      - name: Change directory to MyMath
+        run: cd MyMath
+
       # Generar el reporte de cobertura
       - name: Generate coverage report
         run: |
