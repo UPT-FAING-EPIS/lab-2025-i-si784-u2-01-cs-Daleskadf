@@ -1,0 +1,48 @@
+name: Publish Coverage Report
+
+on:
+  push:
+    branches:
+      - main  # Este flujo de trabajo se ejecutará en cada push a la rama principal
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Puede ser 'windows-latest' si prefieres usar Windows
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '6.x'  # Asegúrate de usar la versión correcta
+
+      # Compilar el proyecto
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build the project
+        run: dotnet build --configuration Release
+
+      # Ejecutar las pruebas y generar el reporte de cobertura
+      - name: Run tests and collect code coverage
+        run: dotnet test --configuration Release --collect:"XPlat Code Coverage"
+
+      # Instalar la herramienta de generación de reportes
+      - name: Install report generator
+        run: |
+          dotnet tool install --global dotnet-reportgenerator-globaltool
+
+      # Generar el reporte de cobertura
+      - name: Generate coverage report
+        run: |
+          reportgenerator "-reports:./TestResults/**/coverage.cobertura.xml" "-targetdir:./coverage_report" -reporttypes:Html
+
+      # Publicar el reporte de cobertura en GitHub Pages
+      - name: Publish coverage report to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./coverage_report
+          destination_dir: coverage  # Esto definirá la carpeta 'coverage' en GitHub Pages
