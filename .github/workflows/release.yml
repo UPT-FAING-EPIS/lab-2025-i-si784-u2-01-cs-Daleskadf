@@ -3,14 +3,8 @@ name: Release Version
 env:
   DOTNET_VERSION: 8.0
   DOTNET_ROOT: /usr/share/dotnet
-
 on:
-  push:
-    branches:
-      - main
-    tags:
-      - 'v*'  # Solo ejecutarse para los tags
-
+  push
 jobs:
   release:
     name: Build and Release Package
@@ -20,33 +14,22 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    # Configura .NET
+    - uses: snyk/actions/setup@master
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
-    # Instalar dependencias
-    - name: Restore dependencies
-      run: dotnet restore MyMath.sln
-      working-directory: MyMath
-
-    # Ejecutar pruebas unitarias
     - name: Run Unit Tests
       run: dotnet test MyMath/Math.Tests/Math.Tests.csproj --logger trx
-      working-directory: MyMath
 
-    # Compilar el proyecto
     - name: Build project
       run: dotnet build MyMath/Math.Lib/Math.Lib.csproj -c Release
-      working-directory: MyMath
 
-    # Crear el paquete NuGet
     - name: Create Release Package
       run: dotnet pack MyMath/Math.Lib/Math.Lib.csproj -c Release -o out
-      working-directory: MyMath
 
-    # Crear Git tag
     - name: Create Git tag
       run: |
         VERSION=$(grep -oP '(?<=<Version>)(.*?)(?=</Version>)' MyMath/Math.Lib/Math.Lib.csproj)
@@ -57,35 +40,27 @@ jobs:
         # Verifica si el tag ya existe en el remoto
         while git ls-remote --tags origin "$TAG" | grep -q "$TAG"; do
           echo "Tag $TAG already exists. Incrementing version."
+          # Si el tag existe, incrementa la versión
           VERSION_INCREMENTED=$(echo $VERSION | awk -F. -v OFS=. '{$NF++;print}')
           TAG="v${VERSION_INCREMENTED}"
           VERSION=$VERSION_INCREMENTED  # Actualiza la versión para seguir incrementando 
           echo "New version with increment: $TAG"
         done
         echo "NAME=$TAG" >> $GITHUB_ENV
+        # Crear el nuevo tag
         git tag $TAG
         git push origin $TAG
 
-    # Obtener tags disponibles después del fetch
     - name: tags available
       run: |
         git fetch --tags
         echo "Tags available after fetch:"
         git tag -l
 
-    # Publicar el paquete NuGet en GitHub Packages
     - name: Publish Release nuget
-      run: |
-        # Publicar el paquete en GitHub Packages
-        dotnet nuget push out/*.nupkg --source github --api-key ${{ secrets.GITHUB_TOKEN }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    # Crear Release en GitHub con el paquete NuGet
-    - name: Create GitHub Release
-      uses: softprops/action-gh-release@v2
+      uses: ncipollo/release-action@v1
       with:
-        tag_name: ${{ env.NAME }}
-        name: Release ${{ env.NAME }}
+        tag: ${{ env.NAME }}
+        name: "Release ${{ env.NAME }}"
         files: out/*.nupkg
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.GH_TOKEN }}
