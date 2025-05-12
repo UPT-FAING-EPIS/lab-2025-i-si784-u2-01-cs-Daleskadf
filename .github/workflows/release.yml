@@ -1,66 +1,51 @@
-name: Release Version
+name: Release Version and NuGetPackage
 
-env:
-  DOTNET_VERSION: 8.0
-  DOTNET_ROOT: /usr/share/dotnet
 on:
-  push
+  push:
+    tags:
+      - 'v*'
+
 jobs:
   release:
-    name: Build and Release Package
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - uses: snyk/actions/setup@master
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: Extract version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
 
-    - name: Run Unit Tests
-      run: dotnet test MyMath/Math.Tests/Math.Tests.csproj --logger trx
+      - name: Set version in .csproj
+        run: sed -i.bak "s|<Version>.*</Version>|<Version>${VERSION}</Version>|" MyMath/Math.Lib/Math.Lib.csproj
 
-    - name: Build project
-      run: dotnet build MyMath/Math.Lib/Math.Lib.csproj -c Release
+      - name: Clean sed backup file
+        run: rm MyMath/Math.Lib/Math.Lib.csproj.bak
 
-    - name: Create Release Package
-      run: dotnet pack MyMath/Math.Lib/Math.Lib.csproj -c Release -o out
+      - name: Restore dependencies
+        run: dotnet restore MyMath/Math.Lib/Math.Lib.csproj
 
-    - name: Create Git tag
-      run: |
-        VERSION=$(grep -oP '(?<=<Version>)(.*?)(?=</Version>)' MyMath/Math.Lib/Math.Lib.csproj)
-        echo "Current Version: $VERSION"
+      - name: Build the project
+        run: dotnet build MyMath/Math.Lib/Math.Lib.csproj --configuration Release
 
-        TAG="v${VERSION}"
+      - name: Pack the NuGet package
+        run: dotnet pack MyMath/Math.Lib/Math.Lib.csproj --configuration Release --output ./nupkg
 
-        # Verifica si el tag ya existe en el remoto
-        while git ls-remote --tags origin "$TAG" | grep -q "$TAG"; do
-          echo "Tag $TAG already exists. Incrementing version."
-          # Si el tag existe, incrementa la versión
-          VERSION_INCREMENTED=$(echo $VERSION | awk -F. -v OFS=. '{$NF++;print}')
-          TAG="v${VERSION_INCREMENTED}"
-          VERSION=$VERSION_INCREMENTED  # Actualiza la versión para seguir incrementando 
-          echo "New version with increment: $TAG"
-        done
-        echo "NAME=$TAG" >> $GITHUB_ENV
-        # Crear el nuevo tag
-        git tag $TAG
-        git push origin $TAG
+      - name: Publish package to GitHub Packages
+        run: dotnet nuget push "./nupkg/*.nupkg" --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" --api-key ${{ secrets.GH_TOKEN }}
 
-    - name: tags available
-      run: |
-        git fetch --tags
-        echo "Tags available after fetch:"
-        git tag -l
-
-    - name: Publish Release nuget
-      uses: ncipollo/release-action@v1
-      with:
-        tag: ${{ env.NAME }}
-        name: "Release ${{ env.NAME }}"
-        files: out/*.nupkg
-        token: ${{ secrets.GH_TOKEN }}
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          files: ./nupkg/*.nupkg
