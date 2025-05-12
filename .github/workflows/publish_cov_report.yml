@@ -3,55 +3,61 @@ name: Publish Coverage Report
 on:
   push:
     branches:
-      - main  # Este flujo de trabajo se ejecutará en cada push a la rama principal
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # Puedes usar 'windows-latest' si prefieres usar Windows
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
-      - name: Set up .NET
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '8.x'  # Asegúrate de que esté usando la versión correcta de .NET
+    - name: Set up .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
 
-      # Compilar el proyecto
-      - name: Restore dependencies
-        run: dotnet restore ./MyMath/MyMath.sln  # Especificamos la ruta correcta al archivo .sln
+    - name: Restore dependencies
+      run: dotnet restore MyMath.sln
+      working-directory: MyMath
 
-      - name: Build the project
-        run: dotnet build ./MyMath/MyMath.sln --configuration Release  # Especificamos la ruta al archivo .sln
+    - name: Build the project
+      run: dotnet build MyMath.sln --configuration Release
+      working-directory: MyMath
 
-      # Ejecutar las pruebas y generar el reporte de cobertura
-      - name: Run tests and collect code coverage
-        run: dotnet test ./MyMath/MyMath.sln --configuration Release --collect:"XPlat Code Coverage"  # Especificamos la ruta al archivo .sln
+    - name: Run tests and collect code coverage
+      run: dotnet test MyMath.sln --configuration Release --collect:"XPlat Code Coverage"
+      working-directory: MyMath
 
-      # Instalar la herramienta de generación de reportes de manera local
-      - name: Install report generator locally
-        run: |
-          dotnet new tool-manifest # Crea un archivo de manifest de herramientas si no existe
-          dotnet tool install dotnet-reportgenerator-globaltool
+    - name: Install ReportGenerator
+      run: dotnet tool install -g dotnet-reportgenerator-globaltool
 
-      # Cambiar al directorio del proyecto para ejecutar la herramienta ReportGenerator
-      - name: Change directory to MyMath
-        run: cd MyMath
+    - name: Add .NET tools to PATH
+      run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
 
-      # Listar los archivos en TestResults para verificar la ubicación de coverage.cobertura.xml
-      - name: List files in TestResults directory
-        run: ls -R ./TestResults
+    - name: Generate coverage report
+      run: |
+        reportgenerator "-reports:**/coverage.cobertura.xml" "-targetdir:coverage-report" -reporttypes:HTML
+      working-directory: MyMath
 
-      # Generar el reporte de cobertura con un patrón de búsqueda más específico
-      - name: Generate coverage report
-        run: |
-          dotnet tool run reportgenerator "-reports:./TestResults/*/coverage.cobertura.xml" "-targetdir:./coverage_report" -reporttypes:Html
+    - name: Pull latest gh-pages branch (optional)
+      run: git pull origin gh-pages || echo "No gh-pages branch to pull"
 
-      # Publicar el reporte de cobertura en GitHub Pages
-      - name: Publish coverage report to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./coverage_report
-          destination_dir: coverage  # Esto definirá la carpeta 'coverage' en GitHub Pages
+    - name: Publish coverage report to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v4
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: MyMath/coverage-report
+        user_name: 'github-actions'
+        user_email: 'github-actions@github.com'
+        publish_branch: gh-pages
+        allow_empty_commit: false
+        keep_files: false
+        force_orphan: false
+        enable_jekyll: false
+        disable_nojekyll: false
+        exclude_assets: .github
