@@ -1,10 +1,33 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <Version>1.0.0</Version>
+<PropertyGroup>
+    <!-- El <PackageId> es el identificador único de tu paquete en NuGet. -->
+    <!-- Asegúrate de que coincida con env.PROJECT_NAME en tu archivo YML. -->
+    <PackageId>MyMath.Lib</PackageId>
+
+    <!-- La <Version> será establecida por el workflow de GitHub Actions. -->
+    <!-- Puedes comentarla o eliminarla para evitar confusiones, o dejarla como referencia para desarrollo local. -->
+    <!-- <Version>1.0.0-local</Version> -->
+
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+
+    <!-- Metadatos adicionales recomendados para tu paquete NuGet -->
+    <Authors>Daleskadf</Authors>
+    <Company>UPT-FAING-EPIS</Company>
+    <Description>Una librería de ejemplo que proporciona funcionalidades matemáticas básicas.</Description>
+    
+    <!-- IMPORTANTE: Actualiza esta URL con la URL de tu repositorio en GitHub -->
+    <RepositoryUrl>https://github.com/UPT-FAING-EPIS/lab-2025-i-si784-u2-01-cs-Daleskadf</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    
+    <!-- Elige una licencia. MIT es común para proyectos open source. -->
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    
+    <!-- Opcional: Si quieres que el paquete generado vaya a un subdirectorio específico al hacer 'dotnet pack' localmente -->
+    <!-- <PackageOutputPath>./nupkg</PackageOutputPath> -->
+
   </PropertyGroup>
 
 </Project>
